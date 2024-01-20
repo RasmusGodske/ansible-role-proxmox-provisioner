@@ -1,0 +1,17 @@
+# https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_kvm_module.html#parameter-ipconfig
+ipconfig:
+  ### Configure to use dhcp
+  ipconfig0: "ip=dhcp"
+
+  ### For defining a static ip address and gateway
+  # NOTE: Remember to add the cidr notation after the ip address
+  # ipconfig0: "ip=192.168.12.16/24,gw=192.168.12.1"
+
+# https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_kvm_module.html#parameter-nameservers
+# To verify the nameservers, run the following command inside the vm:
+# `cat /run/systemd/resolve/resolv.conf`
+# or
+# `resolvectl status``
+nameservers:
+  - 1.1.1.1
+  - 8.8.8.8

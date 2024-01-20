@@ -1,0 +1,18 @@
+---
+- name: Pre install
+  include: 1_pre-install.yaml
+
+- name: Fetch ISO
+  include: 2_fetch-iso.yaml
+
+- name: Upload cloud-init
+  include: 3_upload-cloudinit.yaml
+
+- name: Create VM
+  include: 4_create-vm.yaml
+
+- name: Create Disks
+  include: 5_create_disks.yaml
+
+- name: Start VM
+  include: 6_start_vm.yaml

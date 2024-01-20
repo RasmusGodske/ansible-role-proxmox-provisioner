@@ -1,0 +1,38 @@
+---
+# Since we are using a custom cloud-init snippet,
+# we need to upload it to the node. However the snippets directory
+# does not exist by default, so we need to create it first.
+- name: create directory with parent directories
+  delegate_to: "{{ vm_node_ip }}"
+  file:
+    path: /var/lib/vz/snippets/
+    state: directory
+
+- name: Upload user cloud-init snippet to node
+  delegate_to: "{{ vm_node_ip }}"
+  ansible.builtin.template:
+    src: "user-ci-snippet.yaml"
+    dest: "/var/lib/vz/snippets/user-ci-snippet.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Upload vendor cloud-init snippet to node
+  delegate_to: "{{ vm_node_ip }}"
+  ansible.builtin.template:
+    src: "vendor-ci-snippet.yaml"
+    dest: "/var/lib/vz/snippets/vendor-ci-snippet.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+
+# This has been disabled for now since I did not manage
+# to get it working properly. Read more at: ./templates/README.md
+# - name: Upload custom cloud-init snippet to node
+#   ansible.builtin.template:
+#     src: "network-ci-snippet.yaml"
+#     dest: "/var/lib/vz/snippets/network-ci-snippet.yaml"
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   delegate_to: "192.168.12.10"

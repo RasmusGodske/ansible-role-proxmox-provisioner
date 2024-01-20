@@ -1,0 +1,21 @@
+---
+- name: Import the cloned image disk
+  delegate_to: "{{ vm_node_ip }}"
+  ansible.builtin.shell:
+    cmd: "qm importdisk {{ vm_id }} /var/lib/vz/template/iso/{{ vm_img_filename }} local-lvm"
+
+- name: Attach the cloned disk.
+  delegate_to: "{{ vm_node_ip }}"
+  ansible.builtin.shell:
+    cmd: "qm set {{ vm_id }} --scsi0 local-lvm:vm-{{ vm_id }}-disk-0"
+
+- name: Grow existing disk
+  delegate_to: localhost
+  community.general.proxmox_disk:
+    api_host: "{{ vm_node_ip }}"
+    api_user: "{{ vm_node_api_user }}"
+    api_password: "{{ vm_node_api_password }}"
+    vmid: "{{ vm_id }}"
+    disk: scsi0
+    size: "{{ vm_disk_size }}G"
+    state: resized

@@ -1,0 +1,37 @@
+---
+# These tasks are run on the host machine, as the rest of the role requires the following packages to be installed:
+# - python3-venv
+# - proxmoxer
+
+
+- name: Update apt cache
+  delegate_to: localhost
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install python3-venv
+  delegate_to: localhost
+  apt:
+    name: python3-venv
+    update_cache: yes
+  become: yes
+
+
+- name: Install and upgrade pip
+  delegate_to: localhost
+  pip:
+    name: proxmoxer
+    virtualenv: /tmp/py3
+    virtualenv_command: /usr/bin/python3 -m venv
+    extra_args: --upgrade
+
+# This is required to be able to use the proxmoxer python package
+- name: Install bottle python package
+  become: true
+  delegate_to: localhost
+  ansible.builtin.pip:
+    name: proxmoxer
+    # Without this, pip would complain about that the install would break system packages
+    # Ideally we would use a virtualenv, but I did not manage to get it working properly
+    extra_args: "--break-system-packages"

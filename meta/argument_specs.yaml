@@ -1,0 +1,102 @@
+---
+argument_specs:
+  main:
+    options:
+      # ---------- VM Node ----------
+      vm_node_ip:
+        type: 'str'
+        description: The ip of the node which the VM would be running on
+        required: true
+
+      vm_node:
+        type: 'str'
+        description: The name of the node which the VM would be running on
+        required: true
+
+      vm_node_api_user:
+        type: 'str'
+        description: The api user for the node eg. "root@pam"
+        required: true
+
+      vm_node_api_password:
+        type: 'str'
+        description: The api password for the node
+        required: true
+
+      # ---------- ISO Specific Arguments ----------
+      vm_img_url:
+        type: 'str'
+        description: The url to the iso file
+        required: true
+      vm_img_filename:
+        type: 'str'
+        description: The filename of the iso file
+        required: true
+
+      #  ---------- VM Name / ID ----------
+      vm_id:
+        type: 'int'
+        description: The id of the vm
+        required: true
+      vm_name:
+        type: 'str'
+        description: The name of the vm
+        required: true
+
+
+
+      # ---------- Network Specific Arguments ----------
+      vm_mac_address:
+        type: 'str'
+        description: The mac address of the vm
+        required: true
+      ipconfig:
+        type: 'dict'
+        description: 'The ipconfig for the vm'
+        # Default defined in defaults/main.yaml
+      nameservers:
+        type: 'list'
+        description: 'List of nameservers'
+        required: false
+        # Default defined in defaults/main.yaml
+
+      #------------ Hardware Specific Arguments ----------
+      vm_memory:
+        type: int
+        description: The allocated memory for the vm in MB
+        default: 2048
+      vm_cores:
+        type: int
+        description: The cores for the vm
+        default: 2
+      vm_sockets:
+        type: int
+        description: The sockets for the vm
+        default: 1
+      vm_start:
+        type: 'bool'
+        description: Whether the vm should be started
+        required: true
+      vm_disk_size:
+        type: 'int'
+        description: The size of the disk in GB (e.g. 10) (minimum 3G)
+        default: 5
+      cpu_args:
+        type: 'str'
+        description: Eg. 'host,hidden=1'
+
+      # ---------- SSH / User ----------
+      ssh_public_key:
+        type: 'str'
+        description: The ssh public key for the vm
+        required: true
+
+      default_user:
+        type: 'str'
+        description: The default user for the vm (e.g. ubuntu)
+        required: false
+
+      default_user_password:
+        type: 'str'
+        description: The default user password for the vm
+        required: false

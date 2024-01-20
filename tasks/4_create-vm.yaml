@@ -1,0 +1,66 @@
+---
+- name: Create VM
+  delegate_to: localhost
+  community.general.proxmox_kvm:
+    state: present
+    node: "{{ vm_node }}"
+    api_host: "{{ proxmox.hosts.nuc8.host }}"
+    api_user: "{{ vm_node_api_user }}"
+    api_password: "{{ vm_node_api_password }}"
+    #  VM Configuration
+    vmid: "{{ vm_id }}"
+    name: "{{ vm_name }}"
+    agent: true
+    # Start VM on boot
+    onboot: true
+    boot: c # boot from disk
+    bootdisk: scsi0 # boot from disk
+    # Processor Configuration
+    cores: "{{ vm_cores }}"
+    sockets: "{{ vm_sockets }}"
+    # Ram Memory Configuration
+    memory: "{{ vm_memory }}"
+    # Serial Console - Required to use WebUI console in proxmox
+    serial:
+      serial0: socket
+      vga: serial0
+    # SCSI Controller
+    scsihw: virtio-scsi-pci
+    # Network Device
+    net:
+      net0: 'virtio={{ vm_mac_address }},bridge=vmbr0'
+    # Cloud Init Drive
+    ide:
+      ide2: "local-lvm:cloudinit,media=cdrom"
+
+    ### Cloud Init Configuration
+    cicustom: "user=local:snippets/user-ci-snippet.yaml,vendor=local:snippets/vendor-ci-snippet.yaml"
+
+    ipconfig: "{{ ipconfig }}"
+
+    # To verify the nameservers, run the following command inside the vm:
+    # `cat /run/systemd/resolve/resolv.conf`
+    # or
+    # `resolvectl status`
+    nameservers: "{{ nameservers }}"
+  register: create_vm_result
+
+
+- name: Set Facts
+  set_fact:
+    vm:
+      first_time_creation: "{{ create_vm_result.changed }}"
+
+- name: Wait for vm to be created
+  ansible.builtin.pause:
+    seconds: 10
+  when: vm.first_time_creation == true
+
+# CPU arguments can be useful in some cases eg. running mongoDb which requries avx
+- name: Setting cpu arguments in /etc/pve/nodes/{{ vm_node }}/qemu-server/{{ vm_id }}.conf
+  delegate_to: "{{ vm_node_ip }}"
+  ansible.builtin.blockinfile:
+    path: "/etc/pve/nodes/{{ vm_node }}/qemu-server/{{ vm_id }}.conf"
+    block: "cpu: {{ cpu_args }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - Setting cpu arguments"
+  when: cpu_args is defined

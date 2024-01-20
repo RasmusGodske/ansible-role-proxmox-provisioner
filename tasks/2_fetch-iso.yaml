@@ -1,0 +1,21 @@
+---
+#------------------------------------------------------------
+# Fetch the from the internet and store it on the proxmox node.
+# To pick a image look at https://cloud-images.ubuntu.com/.
+#
+# The file will be stored in /var/lib/vz/template/iso/
+#------------------------------------------------------------
+
+- name: Check if img file is already downloaded
+  delegate_to: "{{ vm_node_ip }}"
+  stat:
+    path: "/var/lib/vz/template/iso/{{ vm_img_filename }}"
+  register: iso_file
+
+- name: Download ISO file if not exists
+  delegate_to: "{{ vm_node_ip }}"
+  get_url:
+    url: "{{ vm_img_url }}"
+    dest: "/var/lib/vz/template/iso/{{ vm_img_filename }}"
+  when: not iso_file.stat.exists
+
