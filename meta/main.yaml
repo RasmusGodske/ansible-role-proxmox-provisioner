@@ -1,0 +1,22 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: RasmusGodske
+  description: Role to create a simple VM in Proxmox
+
+  platforms:
+    - name: Generic
+      versions:
+        - all
+
+  galaxy_tags:
+    - Proxmox
+    - VM
+
+  license: MIT
+
+  min_ansible_version: 2.14.9
+
+  collections:
+    - name: community.general
