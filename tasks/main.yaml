@@ -16,3 +16,6 @@
 
 - name: Start VM
   import_tasks: 6_start_vm.yaml
+
+- name: Wait for VM to be accessible
+  import_tasks: 7_wait_for_vm.yaml

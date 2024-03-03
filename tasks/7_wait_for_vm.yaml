@@ -1,0 +1,10 @@
+---
+- name: Wait for the machine to be accessible
+  wait_for_connection:
+    timeout: 300
+
+- name: Wait for Cloud-Init to finish booting
+  ansible.builtin.wait_for:
+    path: "/var/lib/cloud/instance/boot-finished"
+    state: present
+    timeout: 600

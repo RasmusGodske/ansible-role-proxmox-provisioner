@@ -11,15 +11,15 @@
     state: started
   register: start_vm_result
 
-- name: Set Facts
-  when: vm_start
-  set_fact:
-    vm:
-      first_time_creation: "{{ create_vm_result.changed }}"
-      already_running: "{{ start_vm_result.changed == false }}"
+# - name: Set Facts
+#   when: vm_start
+#   set_fact:
+#     vm:
+#       first_time_creation: "{{ create_vm_result.changed }}"
+#       already_running: "{{ start_vm_result.changed == false }}"
 
-- name: Wait for system to become reachable
-  ansible.builtin.wait_for_connection:
-    delay: 30
-    timeout: 300
-  when: vm.already_running == false and vm_start == true
+# - name: Wait for system to become reachable
+#   ansible.builtin.wait_for_connection:
+#     delay: 30
+#     timeout: 300
+#   when: vm.already_running == false and vm_start == true

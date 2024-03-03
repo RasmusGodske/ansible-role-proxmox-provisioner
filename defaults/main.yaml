@@ -1,5 +1,5 @@
 # https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_kvm_module.html#parameter-ipconfig
-ipconfig:
+cloudinit_ipconfig:
   ### Configure to use dhcp
   ipconfig0: "ip=dhcp"
 

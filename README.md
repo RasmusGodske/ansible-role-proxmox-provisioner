@@ -74,12 +74,17 @@ vm_name: ubuntu-vm
 ### VM Network Configuration
 
 ```yaml
-# The mac address of the VM used by the network interface. Usefull if you want to assign a static IP in your DHCP server.
-vm_mac_address: 00:11:22:33:44:55
+# VM Network Devices defines the network devices to add to the VM as seen in Proxmox web UI > VM > Hardware > Network Device
+vm_network_devices:
+      # net1: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0'                   # Normal Bridge
+      # net2: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1'        # Bridge with Firewall
+      # net3: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1,tag=10' # Bridge with Firewall and VLAN 10
+
 
 # Default and how to use static IP can be found in ./defaults/main.yaml
-ipconfig:
+cloudinit_ipconfig:
   ipconfig0: "ip=dhcp"
+
 
 # Optional
 nameservers:
@@ -147,19 +152,21 @@ default_user_password: verysecurepassword
     vm_name: "ubuntu-vm"
 
     # ---------- Network Specific Arguments ----------
-    vm_mac_address: "00:11:22:33:44:55"
+    vm_network_devices:
+       net0: "virtio=00:11:22:33:44:55,bridge=vmbr0,firewall=1,tag=16" # Bridge with Firewall and VLAN 16
+
     nameservers:
       - 8.8.8.8
       - 1.1.1.1
 
     # Example of using DHCP
-    ipconfig:
+    cloudinit_ipconfig:
       ### Configure to use dhcp
       ipconfig0: "ip=dhcp"
 
     # # Example of using Static IP
-    # ipconfig:
-    #   ipconfig0: "ip=192.168.12.16/24,gw=192.168.12.1"
+    # cloudinit_ipconfig:
+    #   ipconfig0: "ip=192.168.1.5/24,gw=192.168.12.1"
 
     #------------ Hardware Specific Arguments ----------
     vm_memory: 2048
@@ -178,8 +185,8 @@ default_user_password: verysecurepassword
 # Known Issues / Limitations
 - The network cloud init settings are not in use at the moment. Because I were unable to get it to work at the time of writing this. See [templates/README.md](./templates/README.md) for more information. If you have any suggestions or improvements, feel free to open an issue or a pull request. I will try to respond as quickly as possible.
 
-
-
+# Changes
+See [CHANGELOG.md](./CHANGELOG.md) for a list of changes.
 
 # Contribution
 If you have any suggestions or improvements, feel free to open an issue or a pull request. I will try to respond as quickly as possible.

@@ -26,9 +26,12 @@
       vga: serial0
     # SCSI Controller
     scsihw: virtio-scsi-pci
-    # Network Device
-    net:
-      net0: 'virtio={{ vm_mac_address }},bridge=vmbr0'
+    # Network Devices
+    net: "{{ vm_network_devices }}"
+      # net0: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0' # Normal Bridge
+      # net0: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1' # Bridge with Firewall
+      # net0: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1,tag=10' # Bridge with Firewall and VLAN 10
+
     # Cloud Init Drive
     ide:
       ide2: "local-lvm:cloudinit,media=cdrom"
@@ -36,7 +39,7 @@
     ### Cloud Init Configuration
     cicustom: "user=local:snippets/user-ci-snippet.yaml,vendor=local:snippets/vendor-ci-snippet.yaml"
 
-    ipconfig: "{{ ipconfig }}"
+    ipconfig: "{{ cloudinit_ipconfig }}"
 
     # To verify the nameservers, run the following command inside the vm:
     # `cat /run/systemd/resolve/resolv.conf`

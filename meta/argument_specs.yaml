@@ -46,13 +46,18 @@ argument_specs:
 
 
       # ---------- Network Specific Arguments ----------
-      vm_mac_address:
-        type: 'str'
-        description: The mac address of the vm
-        required: true
-      ipconfig:
+      vm_network_devices:
         type: 'dict'
-        description: 'The ipconfig for the vm'
+        # elements: 'dict'
+        description: 'A dictionary of network devices for the vm'
+        required: true
+        # net1: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0'                   # Normal Bridge
+        # net2: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1'        # Bridge with Firewall
+        # net3: 'virtio=4A:76:7A:DC:F5:89,bridge=vmbr0,firewall=1,tag=10' # Bridge with Firewall and VLAN 10
+      cloudinit_ipconfig:
+        type: 'dict'
+        description: 'The cloud-init ipconfig for the vm'
+        # https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_kvm_module.html#parameter-ipconfig
         # Default defined in defaults/main.yaml
       nameservers:
         type: 'list'
