@@ -19,3 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 - Fixed a bug where 'vm_node_ip' were not using the correct variable
 
+### [0.0.4] - 2024-03-05
+### Added
+- Gather facts from the proxmox node once created
