@@ -4,7 +4,7 @@
   community.general.proxmox_kvm:
     state: present
     node: "{{ vm_node }}"
-    api_host: "{{ proxmox.hosts.nuc8.host }}"
+    api_host: "{{ vm_node_ip }}"
     api_user: "{{ vm_node_api_user }}"
     api_password: "{{ vm_node_api_password }}"
     #  VM Configuration

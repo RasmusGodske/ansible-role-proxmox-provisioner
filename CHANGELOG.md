@@ -15,3 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Removed the `proxmox_vm_mac_address` and replaced it with `vm_network_devices` to allow for more flexibility in network configuration
 - Added versioning
 
+### [0.0.3] - 2024-03-05
+### Fixed
+- Fixed a bug where 'vm_node_ip' were not using the correct variable
+
